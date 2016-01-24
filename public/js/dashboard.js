@@ -242,7 +242,7 @@ $(document).ready(function() {
 	        duration: 0
 	    },
 	    donut: {
-	        // title: "Status Code Ratio"
+	        title: "Status Code Ratio"
 	        // expand: false
 	    }
 	});
@@ -258,7 +258,7 @@ $(document).ready(function() {
 		// pie_chart.unload();
 		pie_chart.load({
 			columns: cols,
-			unload: true
+			// unload: true
 		});
 	}
 
@@ -298,7 +298,7 @@ $(document).ready(function() {
 		console.log(codes);
 		bar_chart.load({
 			columns: cols,
-	        unload: true
+	        // unload: true
 		});
 		bar_chart.internal.loadConfig({
 			data: {

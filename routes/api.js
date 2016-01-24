@@ -82,6 +82,7 @@ router.crawlDomain = function(req, res) {
 		'15':42
 	}
 
+
 	// Format/Sort the resource table
 	var resources = [];
 	for (var resource in res.storeddata.resourceTable) {
