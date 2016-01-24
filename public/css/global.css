@@ -116,9 +116,6 @@
   #htmlwrapper .resourcestable .no-resources td {
     text-align: center; }
 
-#htmlwrapper .c3-chart-arc path {
-  stroke: transparent; }
-
 #htmlwrapper .c3-gauge-value {
   fill: #BBB;
   font-weight: 300; }
@@ -144,3 +141,6 @@
 
 #htmlwrapper .c3-axis-x-label {
   font-size: 12px; }
+
+#htmlwrapper #pie-chart .c3-chart-arcs text {
+  fill: #222; }

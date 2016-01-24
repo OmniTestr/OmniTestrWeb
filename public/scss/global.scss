@@ -153,9 +153,9 @@
 		}
 	}
 
-	.c3-chart-arc path {
-		stroke: transparent;
-	}
+	// .c3-chart-arc path {
+	// 	stroke: transparent;
+	// }
 
 	.c3-gauge-value {
 		fill: $light-color;
@@ -184,5 +184,8 @@
 	}
 	.c3-axis-x-label {
 		font-size: 12px;
+	}
+	#pie-chart .c3-chart-arcs text {
+		fill: #222;
 	}
 }

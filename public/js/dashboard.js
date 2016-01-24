@@ -120,4 +120,83 @@ $(document).ready(function() {
 	function markAsFinished() {
 		$('.live-button').removeClass('live').text('DONE');
 	}
+
+	var statusCodeColors = [
+		'#C2FF6B',
+		'#8BE89D',
+		'#64A97B',//'#ACE6F6',
+		'#C94756',
+		'#A21738'
+	];
+
+	function statusCodeColorer(color, d) {
+		var code = (d.id ? d.id : d);
+		if (code && code.length > 0) {
+			var i = parseInt(code[0]) - 1;
+			if (i < statusCodeColors.length)
+				return statusCodeColors[i];
+		}
+		return '#F6F6F6'; // Catch errors
+	}
+
+	var pie_chart = c3.generate({
+		bindto: '#pie-chart',
+	    data: {
+	        columns: [
+	        	['404', 30],
+	        	['301', 40],
+	        	['200', 10],
+	        	['100', 10],
+	        	['501', 10],
+	        ],
+	    	color: statusCodeColorer,
+	        type : 'donut',
+	        onclick: function (d, i) { console.log("onclick", d, i); },
+	        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+	        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+	    },
+	    donut: {
+	        // title: "Status Code Ratio"
+	    }
+	});
+
+	function updatePieChart(cols) {
+		pie_chart.unload();
+		pie_chart.load({
+			columns: cols
+		})
+	}
+
+	// setTimeout(function() {
+	// 	updatePieChart([
+	// 		['404', 34],
+	// 		['200', 62],
+	// 		['301', 4]
+	// 	]);
+	// }, 1500);
+
+	var bar_chart = c3.generate({
+		bindto: '#bar-chart',
+		data: {
+			x: 'x',
+			type: 'bar',
+			columns: [
+				['x', 0, -5, -10, -15, -20],
+				['101', 10, 26, 22, 22, 06],
+				['200', 8, 21, 32, 12, 16],
+				['301', 10, 26, 22, 22, 06],
+				['404', 2, 4, 6, 2, 3],
+				['501', 10, 26, 22, 22, 06],
+			],
+			groups: [
+				['101', '200', '301', '404', '501']
+			],
+	        color: statusCodeColorer
+		}
+	});
+
+	function updateBarChart(json) {
+		console.error('Unsupported!');
+	}
+
 });

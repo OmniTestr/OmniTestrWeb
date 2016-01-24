@@ -22,6 +22,15 @@ block content
 				+numericfield('ELAPSED TIME', '0:00', 'num-elapsedtime')
 				+numericfield('ERROR RATE', '0.0%', 'negative num-errorrate')
 
+	+breakline('STATUS CODES')
+
+	.row
+		.col-xs-6
+			//- Status Code Double Bar Graph
+			#bar-chart
+		.col-xs-6
+			//- Status Code Ratio
+			#pie-chart
 
 	+breakline('RESOURCES')
 
