@@ -1,5 +1,28 @@
 $(document).ready(function() {
 
+	var socket = io('http://localhost:3000');
+	socket.on('news', function (data) {
+		console.log(data);
+
+		updateNumericField('num-reqpersec', data.numericvalues.reqpersec.toFixed(1));
+		updateNumericField('num-reqtime', data.numericvalues.reqtime.toFixed(0) + 'ms');
+		updateNumericField('num-elapsedtime', getTimeSince(new Date(data.numericvalues.starttime)));
+		updateNumericField('num-errorrate', data.numericvalues.errorrate.toFixed(1) + '%');
+
+		
+	});
+
+	function getTimeSince(date) {
+		var ms = (new Date().getTime() - date.getTime());
+		var min = ms/1000/60 << 0;
+		var sec = Math.floor(ms/1000 % 60);
+		if (sec < 10)
+			sec = '0' + sec;
+		if (min < 10)
+			min = '0' + min;
+		return min + ':' + sec;
+	}
+
 	var gauge_chart = c3.generate({
 		bindto: '#gauge-chart',
 	    data: {
@@ -28,22 +51,22 @@ $(document).ready(function() {
 	    });
 	}
 
-	setTimeout(function() {
-		updateGauge(20);
-		setTimeout(function() {
-			updateGauge(40);
-			setTimeout(function() {
-				updateGauge(60);
-				setTimeout(function() {
-					updateGauge(80);
-					setTimeout(function() {
-						updateGauge(100);
-						markAsFinished();
-					}, 1000);
-				}, 1000);
-			}, 1000);
-		}, 1000);
-	}, 1000);
+	// setTimeout(function() {
+	// 	updateGauge(20);
+	// 	setTimeout(function() {
+	// 		updateGauge(40);
+	// 		setTimeout(function() {
+	// 			updateGauge(60);
+	// 			setTimeout(function() {
+	// 				updateGauge(80);
+	// 				setTimeout(function() {
+	// 					updateGauge(100);
+	// 					markAsFinished();
+	// 				}, 1000);
+	// 			}, 1000);
+	// 		}, 1000);
+	// 	}, 1000);
+	// }, 1000);
 
 	var time_chart = c3.generate({
 		bindto: '#linegram',
@@ -104,18 +127,18 @@ $(document).ready(function() {
 		$('.' + key + ' .numericvalue').text(val);
 	}
 
-	setTimeout(function() {
-		updateLinegram([
-			{time: 100, freq: 300},
-			{time: 150, freq: 500},
-			{time: 250, freq: 100},
-			{time: 125, freq: 450}
-		]);
-		updateNumericField('num-reqpersec', '20.0');
-		updateNumericField('num-reqtime', '232ms');
-		updateNumericField('num-elapsedtime', '10:31');
-		updateNumericField('num-errorrate', '2.4%');
-	}, 2000);
+	// setTimeout(function() {
+	// 	updateLinegram([
+	// 		{time: 100, freq: 300},
+	// 		{time: 150, freq: 500},
+	// 		{time: 250, freq: 100},
+	// 		{time: 125, freq: 450}
+	// 	]);
+	// 	updateNumericField('num-reqpersec', '20.0');
+	// 	updateNumericField('num-reqtime', '232ms');
+	// 	updateNumericField('num-elapsedtime', '10:31');
+	// 	updateNumericField('num-errorrate', '2.4%');
+	// }, 2000);
 
 	function markAsFinished() {
 		$('.live-button').removeClass('live').text('DONE');
