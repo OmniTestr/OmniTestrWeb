@@ -32,11 +32,15 @@ app.use(session({ secret: 'iwebfpiuwabiubgiuerg' })); // session secret
 // app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
+app.storeddata = {};
+
 // Pass the access level to our Jade templates
 app.use(function(req,res,next) {
+  res.storeddata = app.storeddata; // Make the stored data object available in the res object to our routes
   res.locals.user = req.user;
   next();
 });
+
 
 // mongoose.connect(configDB.url);
 // mongoose.connection.on('error', function(err){
@@ -56,6 +60,7 @@ app.get('/configure', views.renderConfigure);
 app.get('/dashboard', views.renderDashboard);
 app.get('/resource/:resource_id', views.renderResource);
 
+app.post('/api/crawl', api.crawlDomain);
 // API
 // app.post('/api/register', passport.authenticate('local-signup', {
 //         successRedirect : '/dashboard', // redirect to the dashboard

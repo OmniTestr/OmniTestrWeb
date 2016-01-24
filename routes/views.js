@@ -18,19 +18,24 @@ router.renderLogin = function(req, res) {
 }
 
 router.renderDashboard = function(req, res) {
-	res.render('dashboard.jade', {
-		title: "Dashboard",
-		links: [
-			{ text: "Dashboard", href: "/dashboard", icon: "tachometer", active: true },
-			{ text: "Configuration", href: "/configure", icon: "cog" },
-			{ text: "Logout", href: "/logout", icon: "sign-out" }
-		],
-		live: true,
-		messages: req.flash('dashboardFlash')
-	});
+	if (res.storeddata && res.storeddata.domain) {
+		res.render('dashboard.jade', {
+			title: "Dashboard",
+			links: [
+				{ text: "Dashboard", href: "/dashboard", icon: "tachometer", active: true },
+				{ text: "Configuration", href: "/configure", icon: "cog" },
+				{ text: "Logout", href: "/logout", icon: "sign-out" }
+			],
+			live: res.storeddata.isrunning,
+			messages: req.flash('dashboardFlash')
+		});
+	}
+	else
+		res.redirect('/configure');
 }
 
 router.renderConfigure = function(req, res) {
+	console.log(res.storeddata);
 	res.render('configure.jade', {
 		title: "Configuration",
 		links: [
@@ -38,6 +43,7 @@ router.renderConfigure = function(req, res) {
 			{ text: "Configuration", href: "/configure", icon: "cog", active: true },
 			{ text: "Logout", href: "/logout", icon: "sign-out" }
 		],
+		domain: (res.storeddata ? res.storeddata.domain : null),
 		messages: req.flash('configureFlash')
 	});
 }

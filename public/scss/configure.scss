@@ -1,0 +1,23 @@
+
+@import 'mixins';
+@import 'variables';
+
+#htmlwrapper {
+	label {
+		text-align: center;
+		width: 100%;
+		color: #eee;
+	}
+	#domain-form {
+		max-width: 400px;
+		margin: auto;
+		input {
+			width: 100%;
+			margin: auto;
+			margin-top: 10px;
+		}
+		input[type=submit] {
+			display: block;
+		}
+	}
+}

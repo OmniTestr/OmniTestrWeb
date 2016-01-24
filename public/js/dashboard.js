@@ -2,14 +2,70 @@ $(document).ready(function() {
 
 	var socket = io('http://localhost:3000');
 	socket.on('news', function (data) {
-		console.log(data);
 
-		updateNumericField('num-reqpersec', data.numericvalues.reqpersec.toFixed(1));
-		updateNumericField('num-reqtime', data.numericvalues.reqtime.toFixed(0) + 'ms');
-		updateNumericField('num-elapsedtime', getTimeSince(new Date(data.numericvalues.starttime)));
-		updateNumericField('num-errorrate', data.numericvalues.errorrate.toFixed(1) + '%');
+		updateNumericField('num-reqpersec', data.reqpersec.toFixed(1));
+		updateNumericField('num-reqtime', data.avgreqtime.toFixed(0) + 'ms');
+		updateNumericField('num-elapsedtime', getTimeSince(new Date(data.starttime)));
+		updateNumericField('num-errorrate', data.errorrate.toFixed(1) + '%');
 
-		
+		// Insert resources into table
+		$(".table").find('tbody').html("");
+		for (var i = 0; i < data.resourceTable.length; i++) {
+			var resource = data.resourceTable[i];
+			$(".table").find('tbody').append('<tr><td><a href="//' + resource.resource + '">' + resource.resource + '</a></td><td>' + resource.time.toFixed(0) + 'ms</td><td>' + resource.error.toFixed(1) + '%</td></tr>');
+		}
+
+		// Update timegram chart
+		var json = [];
+		for (var time in data.reqPerTime) {
+			var count = data.reqPerTime[time];
+			json.push({
+				time: parseInt(time),
+				freq: count
+			});
+		}
+		updateLinegram(json);
+
+		// Update status code pie chart
+		var cols = [];
+		for(var code in data.totalStatusCode) {
+			cols.push([code, data.totalStatusCode[code]]);
+		}
+		updatePieChart(cols);
+
+		// Update gauge TODO
+		updateGauge(50);
+
+		// Update bar chart
+		var time = [];
+		var rows = [];
+		var code_data = {};
+		// find all times and codes
+		for(var i = 0; i < data.frequencyBin.length; i++) {
+			time.unshift(data.frequencyBin[i].time);
+			for(var code in data.frequencyBin[i].count) {
+				if(code_data[code] == undefined) code_data[code] = [];
+				// code_data[code].push(data.frequencyBin[i].count[code])
+			}
+		}
+		// console.log(code_data)
+		for(var i = 0; i < data.frequencyBin.length; i++) {
+			for(var code in data.frequencyBin[i].count) {
+				code_data[code].unshift(data.frequencyBin[i].count[code])
+			}
+			for(var code in code_data) {
+				if(code_data[code].length != i + 1)
+					code_data[code].unshift(0);
+			}
+		}
+		time.unshift('x');
+		rows.push(time);
+		for(var code in code_data) {
+			code_data[code].unshift(code);
+			rows.push(code_data[code]);
+		}
+		updateBarChart(rows, Object.keys(code_data));
+
 	});
 
 	function getTimeSince(date) {
@@ -39,6 +95,9 @@ $(document).ready(function() {
 	        threshold: {
 	            values: [25, 50, 75, 100]
 	        }
+	    },
+	    transition: {
+	    	duration: 0
 	    },
 	    size: {
 	        height: 180
@@ -108,6 +167,7 @@ $(document).ready(function() {
 	});
 
 	function updateLinegram(json) {
+		console.log(json);
 		time_chart.load({
 			json: json,
 	        keys: {
@@ -178,16 +238,28 @@ $(document).ready(function() {
 	        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
 	        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
 	    },
+	    transition: {
+	        duration: 0
+	    },
 	    donut: {
 	        // title: "Status Code Ratio"
+	        // expand: false
 	    }
 	});
 
+	// pie_chart.internal.loadConfig({
+	//     transition: {
+	//         duration: 10
+	//     }
+	// });
+
 	function updatePieChart(cols) {
-		pie_chart.unload();
+		// TODO
+		// pie_chart.unload();
 		pie_chart.load({
-			columns: cols
-		})
+			columns: cols,
+			unload: true
+		});
 	}
 
 	// setTimeout(function() {
@@ -204,22 +276,37 @@ $(document).ready(function() {
 			x: 'x',
 			type: 'bar',
 			columns: [
-				['x', 0, -5, -10, -15, -20],
-				['101', 10, 26, 22, 22, 06],
-				['200', 8, 21, 32, 12, 16],
-				['301', 10, 26, 22, 22, 06],
-				['404', 2, 4, 6, 2, 3],
-				['501', 10, 26, 22, 22, 06],
+				// ['x', 0, -5, -10, -15, -20],
+				// ['101', 10, 26, 22, 22, 06],
+				// ['200', 8, 21, 32, 12, 16],
+				// ['301', 10, 26, 22, 22, 06],
+				// ['404', 2, 4, 6, 2, 3],
+				// ['501', 10, 26, 22, 22, 06],
 			],
 			groups: [
-				['101', '200', '301', '404', '501']
+				// ['101', '200', '301', '404', '501']
 			],
 	        color: statusCodeColorer
-		}
+		},
+	    transition: {
+	        duration: 0
+	    }
 	});
 
-	function updateBarChart(json) {
-		console.error('Unsupported!');
+	function updateBarChart(cols, codes) {
+		console.log(cols);
+		console.log(codes);
+		bar_chart.load({
+			columns: cols,
+	        unload: true
+		});
+		bar_chart.internal.loadConfig({
+			data: {
+				groups: [
+					codes
+				]
+			}
+		});
 	}
 
 });

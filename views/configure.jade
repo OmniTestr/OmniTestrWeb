@@ -7,5 +7,13 @@ block content
 
 	+breakline('CONFIGURE')
 
+	if domain
+		label You are currently load testing #{domain}
+
+	form#domain-form(action='POST', url='/api/crawl')
+		label Enter the URL of the domain that you would like to load test.
+		input.domain.form-control(name='domain')
+		input(type='submit' value='Load Test Domain').btn.btn-default
+
 block scripts
 	script(src='/js/configure.js')

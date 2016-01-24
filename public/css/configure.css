@@ -1,0 +1,14 @@
+#htmlwrapper label {
+  text-align: center;
+  width: 100%;
+  color: #eee; }
+
+#htmlwrapper #domain-form {
+  max-width: 400px;
+  margin: auto; }
+  #htmlwrapper #domain-form input {
+    width: 100%;
+    margin: auto;
+    margin-top: 10px; }
+  #htmlwrapper #domain-form input[type=submit] {
+    display: block; }
