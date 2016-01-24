@@ -1,0 +1,45 @@
+extends layout
+
+block styles
+	link(href="/css/c3.min.css", rel="stylesheet", type="text/css")
+
+block content
+
+	+breakline('OVERVIEW')
+
+	.row.dashboard-overview-section
+		.col-xs-4
+			//- Completion Gauge Chart
+			#gauge-chart
+		.col-xs-5
+			//- Time Per Request Line Histogram
+			#linegram
+		.col-xs-3
+			//- Numeric Figures
+			.numericfields
+				+numericfield('REQUESTS / SECOND', '0.0', 'positive num-reqpersec')
+				+numericfield('AVERAGE REQUEST TIME', '0ms', 'num-reqtime')
+				+numericfield('ELAPSED TIME', '0:00', 'num-elapsedtime')
+				+numericfield('ERROR RATE', '0.0%', 'negative num-errorrate')
+
+
+	+breakline('RESOURCES')
+
+	.resourcestable
+		.panel.panel-default
+			table.table
+				thead
+					tr 
+						th Resource URL
+						th Average Request Time
+						th Error Rate
+				tbody
+					tr.no-resources
+						td(colspan=3) No Resources Yet
+
+block scripts
+	script(src="/js/d3.min.js", charset="utf-8")
+	script(src="/js/c3.js")
+	script(src='/js/moment.js')
+	script(src='/js/dashboard.js')
+

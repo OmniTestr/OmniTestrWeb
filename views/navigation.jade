@@ -1,0 +1,20 @@
+// Static navbar
+.row
+  .col-xs-3
+    //- Menu
+    .menu
+      if links
+        for link in links
+          .row
+            .menu-item.pull-right
+              a(href=link.href class=(link.active ? "active" : ""))
+                span #{link.text}  
+                  i.fa(class=(link.icon ? "fa-" + link.icon : ""))
+  .col-xs-6
+    //- Title
+    h2#title= title
+  .col-xs-3
+    //- LIVE Button
+    if live
+      .live-button(class=(live == true ? "live" : "done"))= (live == true ? "LIVE" : "DONE")
+

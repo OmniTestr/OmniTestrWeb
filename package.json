@@ -1,0 +1,37 @@
+{
+  "name": "omnitestrweb",
+  "version": "1.0.0",
+  "description": "NodeJS web client to allow users to initialize testing sessions with visualizations.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./bin/www"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OmniTestr/OmniTestrWeb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OmniTestr/OmniTestrWeb/issues"
+  },
+  "homepage": "https://github.com/OmniTestr/OmniTestrWeb#readme",
+  "dependencies": {
+    "body-parser": "^1.14.2",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.1",
+    "express": "^4.13.4",
+    "express-passport-logout": "^0.1.0",
+    "express-session": "^1.13.0",
+    "jade": "^1.11.0",
+    "mongodb": "^2.1.4",
+    "mongoose": "^4.3.7",
+    "morgan": "^1.6.1",
+    "passport": "^0.3.2",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-sass": "^2.1.1"
+  }
+}
